@@ -1,54 +1,104 @@
 import * as React from 'react'
-import { styled, useTheme } from '@mui/material/styles'
-import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
-import CssBaseline from '@mui/material/CssBaseline'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import List from '@mui/material/List'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
+import theme from '@/pages/theme'
+import {
+  PeopleAlt,
+  AirlineSeatReclineNormal,
+  ForkRight,
+  DirectionsCarFilled,
+} from '@mui/icons-material'
+import {
+  Box,
+  Hidden,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconProps,
+} from '@mui/material'
+import { useRouter } from 'next/router'
+
+interface MenuItensProps {
+  id: number
+  label: string
+  path: string
+  icon: IconProps
+}
+
+const styles = {
+  mobileDrawer: {
+    width: '240px',
+  },
+  desktopDrawer: {
+    width: '240px',
+    top: '56px',
+    heigth: 'calc(100% - 64px)',
+    borderRigth: 'none',
+  },
+  listItem: {
+    paddingTop: '6px',
+    paddingBottom: '6px',
+    peddingLeft: theme.spacing(3),
+  },
+  listItemtext: {
+    fontSize: '14px',
+  },
+}
+
+const menuItens: MenuItensProps[] = [
+  { id: 1, label: 'Clientes', path: '/client', icon: PeopleAlt },
+  {
+    id: 2,
+    label: 'Condutores',
+    path: '/conductor',
+    icon: AirlineSeatReclineNormal,
+  },
+  { id: 3, label: 'Deslocamentos', path: '/displacement', icon: ForkRight },
+  { id: 4, label: 'Veículos', path: '/vehicle', icon: DirectionsCarFilled },
+]
 
 export default function Sidebar() {
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer sx={{}}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+  const router = useRouter()
+  const isSelected = (item: MenuItensProps) => {
+    return router.pathname === item.path
+  }
+
+  const content = (
+    <Box height="100%" display="flex" flexDirection="column" paddingTop={7}>
+      <List>
+        {menuItens.map((item) => {
+          const Icon = item.icon
+
+          return (
+            <ListItemButton
+              key={item.id}
+              classes={{ root: `${styles.listItem}` }}
+              selected={isSelected(item)}
+            >
+              <ListItemIcon>
+                <Icon style={{ color: isSelected(item) && '#4caf50' }} />
+              </ListItemIcon>
+              <ListItemText
+                classes={{ primary: `${styles.listItemtext}` }}
+                primary={item.label}
+              />
+            </ListItemButton>
+          )
+        })}
+      </List>
     </Box>
+  )
+
+  return (
+    <Hidden mdDown>
+      <Drawer
+        anchor="left"
+        classes={{ paper: `${styles.desktopDrawer}` }}
+        open
+        variant="persistent"
+      >
+        {content}
+      </Drawer>
+    </Hidden>
   )
 }
