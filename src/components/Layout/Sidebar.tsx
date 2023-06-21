@@ -5,6 +5,7 @@ import {
   AirlineSeatReclineNormal,
   ForkRight,
   DirectionsCarFilled,
+  SvgIconComponent,
 } from '@mui/icons-material'
 import {
   Box,
@@ -14,15 +15,14 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconProps,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 
-interface MenuItensProps {
+interface IMenuItens {
   id: number
   label: string
   path: string
-  icon: IconProps
+  icon: SvgIconComponent
 }
 
 const styles = {
@@ -45,7 +45,7 @@ const styles = {
   },
 }
 
-const menuItens: MenuItensProps[] = [
+const menuItens: IMenuItens[] = [
   { id: 1, label: 'Clientes', path: '/client', icon: PeopleAlt },
   {
     id: 2,
@@ -59,14 +59,15 @@ const menuItens: MenuItensProps[] = [
 
 export default function Sidebar() {
   const router = useRouter()
-  const isSelected = (item: MenuItensProps) => {
+
+  const isSelected = (item: IMenuItens) => {
     return router.pathname === item.path
   }
 
   const content = (
     <Box height="100%" display="flex" flexDirection="column" paddingTop={7}>
       <List>
-        {menuItens.map((item) => {
+        {menuItens.map((item: IMenuItens) => {
           const Icon = item.icon
 
           return (
@@ -74,9 +75,12 @@ export default function Sidebar() {
               key={item.id}
               classes={{ root: `${styles.listItem}` }}
               selected={isSelected(item)}
+              onClick={() => router.push(item.path)}
             >
               <ListItemIcon>
-                <Icon style={{ color: isSelected(item) && '#4caf50' }} />
+                <Icon
+                  style={{ color: isSelected(item) ? '#4caf50' : undefined }}
+                />
               </ListItemIcon>
               <ListItemText
                 classes={{ primary: `${styles.listItemtext}` }}
