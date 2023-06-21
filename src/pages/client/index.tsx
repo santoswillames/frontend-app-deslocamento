@@ -1,3 +1,9 @@
+import Header from '@/components/Header/Header'
+
 export default function Client() {
-  return <h1>Client</h1>
+  return (
+    <section>
+      <Header title="Cliente" />
+    </section>
+  )
 }

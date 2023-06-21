@@ -1,3 +1,9 @@
+import Header from '@/components/Header/Header'
+
 export default function Vehicle() {
-  return <h1>Veículo</h1>
+  return (
+    <section>
+      <Header title="Veículos" />
+    </section>
+  )
 }

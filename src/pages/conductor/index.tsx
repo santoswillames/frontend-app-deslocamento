@@ -1,3 +1,9 @@
+import Header from '@/components/Header/Header'
+
 export default function Conductor() {
-  return <h1>Condutor</h1>
+  return (
+    <section>
+      <Header title="Condutores" />
+    </section>
+  )
 }

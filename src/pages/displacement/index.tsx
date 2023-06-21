@@ -1,3 +1,9 @@
+import Header from '@/components/Header/Header'
+
 export default function Displacement() {
-  return <h1>Deslocamento</h1>
+  return (
+    <section>
+      <Header title="Deslocamentos" />
+    </section>
+  )
 }
