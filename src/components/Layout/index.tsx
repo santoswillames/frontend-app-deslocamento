@@ -21,7 +21,7 @@ const styles = {
     flex: ' 1 1 auto',
     overflow: 'hidden',
     paddingTop: '64px',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       paddingLeft: '256px',
     },
   },
