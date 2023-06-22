@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
-const useFetch = () => {
-  const [data, setData] = useState<object | null>(null)
+function useFetch<T = unknown>() {
+  const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean | null>(null)
 
