@@ -83,7 +83,151 @@ export function CLIENT_DELETE(id: number) {
   return {
     url: `Cliente/${id}`,
     options: {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    },
+  }
+}
+
+export function CONDUCTOR_GET() {
+  return {
+    url: 'Condutor',
+    options: {
+      method: 'GET',
+    },
+  }
+}
+
+export function CONDUCTOR_POST(body: CreateConductor) {
+  return {
+    url: 'Condutor',
+    options: {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function CONDUCTOR_PUT(id: number, body: CreateConductor) {
+  return {
+    url: `Condutor/${id}`,
+    options: {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function CONDUCTOR_DELETE(id: number) {
+  return {
+    url: `Condutor/${id}`,
+    options: {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    },
+  }
+}
+
+export function DISPLACEMENT_GET() {
+  return {
+    url: 'Deslocamento',
+    options: {
+      method: 'GET',
+    },
+  }
+}
+
+export function DISPLACEMENT_POST(body: CreateDisplacement) {
+  return {
+    url: 'Deslocamento',
+    options: {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function DISPLACEMENT_PUT(id: number, body: UpdateDisplacement) {
+  return {
+    url: `Deslocamento/${id}`,
+    options: {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function DISPLACEMENT_DELETE(id: number) {
+  return {
+    url: `Deslocamento/${id}`,
+    options: {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    },
+  }
+}
+
+export function VEHICLE_GET() {
+  return {
+    url: 'Veiculo',
+    options: {
+      method: 'GET',
+    },
+  }
+}
+
+export function VEHICLE_POST(body: CreateVehicle) {
+  return {
+    url: 'Veiculo',
+    options: {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function VEHICLE_PUT(id: number, body: CreateVehicle) {
+  return {
+    url: `Veiculo/${id}`,
+    options: {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  }
+}
+
+export function VEHICLE_DELETE(id: number) {
+  return {
+    url: `Veiculo/${id}`,
+    options: {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
