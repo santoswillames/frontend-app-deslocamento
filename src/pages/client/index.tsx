@@ -18,23 +18,29 @@ type DataClients = {
 }
 
 export default function Client() {
-  const { data: dataClients, error, loading, request } = useFetch()
+  const {
+    data: dataClients,
+    error,
+    loading,
+    getDataRequest,
+  } = useFetch<DataClients[]>()
 
   useEffect(() => {
     function fetchClients() {
       const { url, options } = CLIENT_GET()
-      request(url, options)
+      getDataRequest(url, options)
     }
     fetchClients()
-  }, [request])
-
-  console.log(dataClients)
+  }, [getDataRequest])
 
   return (
     <section>
       <Header title="Cliente" />
       <Container>
-        <TableData />
+        {loading && <p>Carregando...</p>}
+        {error && <p>{error}</p>}
+        {dataClients && dataClients.length > 0 && <TableData />}
+        {dataClients && dataClients.length < 1 && <p>Não há dados!</p>}
       </Container>
     </section>
   )
