@@ -24,16 +24,19 @@ function useFetch<T = unknown>() {
     [],
   )
 
-  const request = useCallback((url: string, options?: AxiosRequestConfig) => {
-    setError(null)
-    setLoading(true)
-    api(url, options)
-      .then((response) => {
-        setData(response.data)
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
-  }, [])
+  const request = useCallback(
+    (url: string, options?: AxiosRequestConfig): T[] | {} | void => {
+      setError(null)
+      setLoading(true)
+      api(url, options)
+        .then((response) => {
+          return response.data
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false))
+    },
+    [],
+  )
 
   return {
     getDataRequest,
