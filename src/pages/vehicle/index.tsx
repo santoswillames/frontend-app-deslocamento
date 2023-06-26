@@ -9,9 +9,9 @@ import {
   Button,
 } from '@mui/material'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
-import { VEHICLE_GET } from '../api'
+import { VEHICLE_DELETE, VEHICLE_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type DataVehicle = {
   id: number
@@ -24,22 +24,31 @@ type DataVehicle = {
 const cells = ['Placa', 'Modelo', 'Ano', 'KM Autal', 'Ações']
 
 export default function Vehicle() {
-  const {
-    data: dataVehicle,
-    error,
-    loading,
-    getDataRequest,
-  } = useFetch<DataVehicle[]>()
+  const { error, loading, request } = useFetch<DataVehicle[]>()
+
+  const [dataVehicle, setDataVehicle] = useState<
+    DataVehicle[] | null | undefined
+  >(null)
+
+  const fetchClients = useCallback(async () => {
+    const { url, options } = VEHICLE_GET()
+    const data = await request(url, options)
+    console.log(data)
+    setDataVehicle(data)
+  }, [request])
 
   useEffect(() => {
-    function fetchClients() {
-      const { url, options } = VEHICLE_GET()
-      getDataRequest(url, options)
-    }
     fetchClients()
-  }, [getDataRequest])
+  }, [fetchClients])
 
-  console.log(dataVehicle)
+  async function deleteVehicle(id: number, name: string): Promise<void> {
+    if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
+      return
+    }
+    const { url, options } = VEHICLE_DELETE(id)
+    await request(url, options)
+    fetchClients()
+  }
 
   return (
     <section>
@@ -75,7 +84,11 @@ export default function Vehicle() {
                     <Button sx={{ cursor: 'pointer' }} title="Editar">
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
-                    <Button sx={{ cursor: 'pointer' }} title="Excluir">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Excluir"
+                      onClick={() => deleteVehicle(vehicle.id, vehicle.placa)}
+                    >
                       <DeleteRounded sx={{ color: 'red' }} />
                     </Button>
                   </TableCell>

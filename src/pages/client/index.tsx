@@ -9,8 +9,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import { useEffect } from 'react'
-import { CLIENT_GET } from '../api'
+import { useEffect, useCallback, useState } from 'react'
+import { CLIENT_DELETE, CLIENT_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 
 type DataClients = {
@@ -38,20 +38,30 @@ const cells = [
 ]
 
 export default function Client() {
-  const {
-    data: dataClients,
-    error,
-    loading,
-    getDataRequest,
-  } = useFetch<DataClients[]>()
+  const { error, loading, request } = useFetch<DataClients[]>()
+
+  const [dataClients, setDataClients] = useState<
+    DataClients[] | null | undefined
+  >(null)
+
+  const fetchClients = useCallback(async () => {
+    const { url, options } = CLIENT_GET()
+    const data = await request(url, options)
+    setDataClients(data)
+  }, [request])
 
   useEffect(() => {
-    function fetchClients() {
-      const { url, options } = CLIENT_GET()
-      getDataRequest(url, options)
-    }
     fetchClients()
-  }, [getDataRequest])
+  }, [fetchClients])
+
+  async function deleteClient(id: number, name: string): Promise<void> {
+    if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
+      return
+    }
+    const { url, options } = CLIENT_DELETE(id)
+    await request(url, options)
+    fetchClients()
+  }
 
   return (
     <section>
@@ -91,7 +101,11 @@ export default function Client() {
                     <Button sx={{ cursor: 'pointer' }} title="Editar">
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
-                    <Button sx={{ cursor: 'pointer' }} title="Excluir">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Excluir"
+                      onClick={() => deleteClient(client.id, client.nome)}
+                    >
                       <DeleteRounded sx={{ color: 'red' }} />
                     </Button>
                   </TableCell>

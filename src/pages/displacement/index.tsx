@@ -1,3 +1,4 @@
+import * as React from 'react'
 import Header from '@/components/Header/Header'
 import { TableData } from '@/components/Table/Table'
 import {
@@ -8,8 +9,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import { useEffect } from 'react'
-import { DISPLACEMENT_GET } from '../api'
+import { useCallback, useEffect, useState } from 'react'
+import { DISPLACEMENT_DELETE, DISPLACEMENT_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 
@@ -42,20 +43,30 @@ const cells = [
 ]
 
 export default function Displacement() {
-  const {
-    data: dataDisplacement,
-    error,
-    loading,
-    getDataRequest,
-  } = useFetch<DataDisplacement[]>()
+  const { error, loading, request } = useFetch<DataDisplacement[]>()
+
+  const [dataDisplacement, setDataDisplacement] = useState<
+    DataDisplacement[] | null | undefined
+  >(null)
+
+  const fetchClients = useCallback(async () => {
+    const { url, options } = DISPLACEMENT_GET()
+    const data = await request(url, options)
+    setDataDisplacement(data)
+  }, [request])
 
   useEffect(() => {
-    function fetchClients() {
-      const { url, options } = DISPLACEMENT_GET()
-      getDataRequest(url, options)
-    }
     fetchClients()
-  }, [getDataRequest])
+  }, [fetchClients])
+
+  async function deleteDisplacement(id: number): Promise<void> {
+    if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
+      return
+    }
+    const { url, options } = DISPLACEMENT_DELETE(id)
+    await request(url, options)
+    fetchClients()
+  }
 
   return (
     <section>
@@ -101,7 +112,11 @@ export default function Displacement() {
                     <Button sx={{ cursor: 'pointer' }} title="Editar">
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
-                    <Button sx={{ cursor: 'pointer' }} title="Excluir">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Excluir"
+                      onClick={() => deleteDisplacement(displacement.id)}
+                    >
                       <DeleteRounded sx={{ color: 'red' }} />
                     </Button>
                   </TableCell>

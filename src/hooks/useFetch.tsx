@@ -6,42 +6,31 @@ const api = axios.create({
 })
 
 function useFetch<T = unknown>() {
-  const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean | null>(null)
 
-  const getDataRequest = useCallback(
-    (url: string, options?: AxiosRequestConfig) => {
-      setError(null)
-      setLoading(true)
-      api(url, options)
-        .then((response) => {
-          setData(response.data)
-        })
-        .catch((err) => setError(err.message))
-        .finally(() => setLoading(false))
-    },
-    [],
-  )
-
   const request = useCallback(
-    (url: string, options?: AxiosRequestConfig): T[] | {} | void => {
+    async (
+      url: string,
+      options?: AxiosRequestConfig,
+    ): Promise<T | null | undefined> => {
+      let data
       setError(null)
       setLoading(true)
-      api(url, options)
+      await api(url, options)
         .then((response) => {
-          return response.data
+          data = response.data
         })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false))
+
+      return data
     },
     [],
   )
 
   return {
-    getDataRequest,
     request,
-    data,
     loading,
     error,
   }

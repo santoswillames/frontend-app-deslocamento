@@ -61,7 +61,7 @@ export function CLIENT_POST(body: CreateClient) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -74,7 +74,7 @@ export function CLIENT_PUT(id: number, body: CreateClient) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -87,7 +87,7 @@ export function CLIENT_DELETE(id: number) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      data: JSON.stringify({ id }),
     },
   }
 }
@@ -109,7 +109,7 @@ export function CONDUCTOR_POST(body: CreateConductor) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -122,7 +122,7 @@ export function CONDUCTOR_PUT(id: number, body: CreateConductor) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -135,7 +135,7 @@ export function CONDUCTOR_DELETE(id: number) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      data: JSON.stringify({ id }),
     },
   }
 }
@@ -157,7 +157,7 @@ export function DISPLACEMENT_POST(body: CreateDisplacement) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -170,7 +170,7 @@ export function DISPLACEMENT_PUT(id: number, body: UpdateDisplacement) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -183,7 +183,7 @@ export function DISPLACEMENT_DELETE(id: number) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      data: JSON.stringify({ id }),
     },
   }
 }
@@ -205,7 +205,7 @@ export function VEHICLE_POST(body: CreateVehicle) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -218,7 +218,7 @@ export function VEHICLE_PUT(id: number, body: CreateVehicle) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      data: JSON.stringify(body),
     },
   }
 }
@@ -231,7 +231,7 @@ export function VEHICLE_DELETE(id: number) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      data: JSON.stringify({ id }),
     },
   }
 }
