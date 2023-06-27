@@ -12,6 +12,7 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { CONDUCTOR_DELETE, CONDUCTOR_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
+import useShowFormContext from '@/context/ShowForm'
 
 type DataConductor = {
   id: number
@@ -24,6 +25,7 @@ type DataConductor = {
 const cells = ['Nome', 'Número CNH', 'Categoria CNH', 'Vencimento CNH', 'Ações']
 
 export default function Conductor() {
+  const { setShowFormState, showFormState } = useShowFormContext()
   const { error, loading, request } = useFetch<DataConductor[]>()
 
   const [dataConductor, setDataConductor] = useState<
@@ -49,9 +51,17 @@ export default function Conductor() {
     fetchClients()
   }
 
+  function getConductorForUpdate(conductor: DataConductor) {
+    console.log(conductor)
+    setShowFormState({ showForm: true, titleButton: 'Atualizar' })
+  }
+
   return (
     <section>
       <Header title="Condutores" />
+      {showFormState.showForm && (
+        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+      )}
       <Container>
         {loading && <p>Carregando...</p>}
         {error && <p>{error}</p>}
@@ -80,7 +90,11 @@ export default function Conductor() {
                   <TableCell>{conductor.catergoriaHabilitacao}</TableCell>
                   <TableCell>{conductor.vencimentoHabilitacao}</TableCell>
                   <TableCell align="center">
-                    <Button sx={{ cursor: 'pointer' }} title="Editar">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Editar"
+                      onClick={() => getConductorForUpdate(conductor)}
+                    >
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
                     <Button

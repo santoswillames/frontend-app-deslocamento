@@ -12,6 +12,7 @@ import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import { VEHICLE_DELETE, VEHICLE_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
 import { useCallback, useEffect, useState } from 'react'
+import useShowFormContext from '@/context/ShowForm'
 
 type DataVehicle = {
   id: number
@@ -24,6 +25,7 @@ type DataVehicle = {
 const cells = ['Placa', 'Modelo', 'Ano', 'KM Autal', 'Ações']
 
 export default function Vehicle() {
+  const { setShowFormState, showFormState } = useShowFormContext()
   const { error, loading, request } = useFetch<DataVehicle[]>()
 
   const [dataVehicle, setDataVehicle] = useState<
@@ -50,9 +52,18 @@ export default function Vehicle() {
     fetchClients()
   }
 
+  function getVehicleForUpdate(vehicle: DataVehicle) {
+    console.log(vehicle)
+    setShowFormState({ showForm: true, titleButton: 'Atualizar' })
+  }
+
   return (
     <section>
       <Header title="Veículos" />
+      {showFormState.showForm && (
+        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+      )}
+      <Container></Container>
       <Container>
         {loading && <p>Carregando...</p>}
         {error && <p>{error}</p>}
@@ -81,7 +92,11 @@ export default function Vehicle() {
                   <TableCell>{vehicle.anoFabricacao}</TableCell>
                   <TableCell>{vehicle.kmAtual}</TableCell>
                   <TableCell align="center">
-                    <Button sx={{ cursor: 'pointer' }} title="Editar">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Editar"
+                      onClick={() => getVehicleForUpdate(vehicle)}
+                    >
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
                     <Button

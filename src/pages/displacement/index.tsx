@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { DISPLACEMENT_DELETE, DISPLACEMENT_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
+import useShowFormContext from '@/context/ShowForm'
 
 type DataDisplacement = {
   id: number
@@ -43,6 +44,7 @@ const cells = [
 ]
 
 export default function Displacement() {
+  const { setShowFormState, showFormState } = useShowFormContext()
   const { error, loading, request } = useFetch<DataDisplacement[]>()
 
   const [dataDisplacement, setDataDisplacement] = useState<
@@ -60,7 +62,7 @@ export default function Displacement() {
   }, [fetchClients])
 
   async function deleteDisplacement(id: number): Promise<void> {
-    if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
+    if (!confirm(`Deseja realmente excluir o registro?`)) {
       return
     }
     const { url, options } = DISPLACEMENT_DELETE(id)
@@ -68,9 +70,17 @@ export default function Displacement() {
     fetchClients()
   }
 
+  function getDisplacementForUpdate(displacement: DataDisplacement) {
+    console.log(displacement)
+    setShowFormState({ showForm: true, titleButton: 'Atualizar' })
+  }
+
   return (
     <section>
       <Header title="Deslocamentos" />
+      {showFormState.showForm && (
+        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+      )}
       <Container>
         {loading && <p>Carregando...</p>}
         {error && <p>{error}</p>}
@@ -109,7 +119,11 @@ export default function Displacement() {
                   <TableCell>{displacement.idVeiculo}</TableCell>
                   <TableCell>{displacement.idCliente}</TableCell>
                   <TableCell align="center">
-                    <Button sx={{ cursor: 'pointer' }} title="Editar">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Editar"
+                      onClick={() => getDisplacementForUpdate(displacement)}
+                    >
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
                     <Button

@@ -12,6 +12,7 @@ import {
 import { useEffect, useCallback, useState } from 'react'
 import { CLIENT_DELETE, CLIENT_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
+import useShowFormContext from '@/context/ShowForm'
 
 type DataClients = {
   id: number
@@ -38,6 +39,7 @@ const cells = [
 ]
 
 export default function Client() {
+  const { setShowFormState, showFormState } = useShowFormContext()
   const { error, loading, request } = useFetch<DataClients[]>()
 
   const [dataClients, setDataClients] = useState<
@@ -63,9 +65,17 @@ export default function Client() {
     fetchClients()
   }
 
+  function getClientForUpdate(client: DataClients) {
+    console.log(client)
+    setShowFormState({ showForm: true, titleButton: 'Atualizar' })
+  }
+
   return (
     <section>
       <Header title="Cliente" />
+      {showFormState.showForm && (
+        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+      )}
       <Container>
         {loading && <p>Carregando...</p>}
         {error && <p>{error}</p>}
@@ -98,7 +108,11 @@ export default function Client() {
                   <TableCell>{client.cidade}</TableCell>
                   <TableCell>{client.uf}</TableCell>
                   <TableCell align="center">
-                    <Button sx={{ cursor: 'pointer' }} title="Editar">
+                    <Button
+                      sx={{ cursor: 'pointer' }}
+                      title="Editar"
+                      onClick={() => getClientForUpdate(client)}
+                    >
                       <EditRounded sx={{ color: 'yellow' }} />
                     </Button>
                     <Button

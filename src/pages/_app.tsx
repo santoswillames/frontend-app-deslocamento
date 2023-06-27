@@ -7,6 +7,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import theme from './theme'
 import createEmotionCache from '../utils/createEmotionCache'
 import { Layout } from '@/components/Layout'
+import { ShowFormProvider } from '@/context/ShowForm'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -26,9 +27,11 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <ShowFormProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ShowFormProvider>
       </ThemeProvider>
     </CacheProvider>
   )
