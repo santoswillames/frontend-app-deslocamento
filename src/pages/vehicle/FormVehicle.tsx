@@ -35,8 +35,9 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
-          justifyContent: 'stretch',
+          justifyContent: 'start',
           gap: 4,
           width: '100%',
         }}

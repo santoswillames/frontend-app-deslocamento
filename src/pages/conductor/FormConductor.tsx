@@ -35,31 +35,33 @@ export const FormConductor: React.FC<FormConductorProps> = ({
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'start',
+          gap: 4,
           width: '100%',
         }}
       >
-        <TextField id="placa" label="Placa" variant="outlined" name="placa" />
+        <TextField id="nome" label="Nome" variant="outlined" name="nome" />
+
         <TextField
-          id="marcaModelo"
-          label="Marca ou Modelo"
+          id="numeroHabilitacao"
+          label="Número CNH"
           variant="outlined"
-          name="marcaModelo"
-        />
-        <TextField
-          id="anoFabricacao"
-          label="Ano de Fabricação"
-          variant="outlined"
-          name="anoFabricacao"
+          name="numeroHabilitacao"
           type="number"
         />
         <TextField
-          id="kmAtual"
-          label="Km Atual"
+          id="catergoriaHabilitacao"
+          label="Categoria da CNH"
           variant="outlined"
-          name="kmAtual"
-          type="number"
+          name="catergoriaHabilitacao"
+        />
+        <TextField
+          id="vencimentoHabilitacao"
+          label="Vencimento da CNH"
+          variant="outlined"
+          name="vencimentoHabilitacao"
         />
       </Box>
       <Box

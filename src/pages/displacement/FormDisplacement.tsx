@@ -35,31 +35,74 @@ export const FormDisplacement: React.FC<FormDisplacementProps> = ({
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'start',
+          gap: 4,
           width: '100%',
         }}
       >
-        <TextField id="placa" label="Placa" variant="outlined" name="placa" />
         <TextField
-          id="marcaModelo"
-          label="Marca ou Modelo"
+          id="kmInicial"
+          label="KM Inicial"
           variant="outlined"
-          name="marcaModelo"
-        />
-        <TextField
-          id="anoFabricacao"
-          label="Ano de Fabricação"
-          variant="outlined"
-          name="anoFabricacao"
+          name="kmInicial"
           type="number"
         />
         <TextField
-          id="kmAtual"
-          label="Km Atual"
+          id="kmFinal"
+          label="Km Final"
           variant="outlined"
-          name="kmAtual"
+          name="kmFinal"
           type="number"
+        />
+        <TextField
+          id="inicioDeslocamento"
+          label="Inicio do deslocamento"
+          variant="outlined"
+          name="inicioDeslocamento"
+        />
+        <TextField
+          id="fimDeslocamento"
+          label="Fim do deslocamento"
+          variant="outlined"
+          name="fimDeslocamento"
+        />
+        <TextField
+          id="checkList"
+          label="Checklist"
+          variant="outlined"
+          name="checkList"
+        />
+        <TextField
+          id="motivo"
+          label="Motivo"
+          variant="outlined"
+          name="motivo"
+        />
+        <TextField
+          id="observacao"
+          label="Observação"
+          variant="outlined"
+          name="observacao"
+        />
+        <TextField
+          id="idCondutor"
+          label="Condutor"
+          variant="outlined"
+          name="idCondutor"
+        />
+        <TextField
+          id="idVeiculo"
+          label="Veículo"
+          variant="outlined"
+          name="idVeiculo"
+        />
+        <TextField
+          id="idCliente"
+          label="Cliente"
+          variant="outlined"
+          name="idCliente"
         />
       </Box>
       <Box

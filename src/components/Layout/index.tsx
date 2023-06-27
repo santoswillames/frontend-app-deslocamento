@@ -22,7 +22,7 @@ const styles = {
     overflow: 'hidden',
     paddingTop: '64px',
     [theme.breakpoints.up('md')]: {
-      paddingLeft: '180px',
+      paddingLeft: '200px',
     },
   },
   content: {
