@@ -1,20 +1,20 @@
 import * as React from 'react'
-import { DataVehicle } from '.'
+import { DataDisplacement } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
 import { ShowFormContextType } from '@/context/ShowForm'
 
-type FormVehicleProps = {
-  vehicle?: DataVehicle
+type FormDisplacementProps = {
+  displacement?: DataDisplacement
   titleButton: string
-  fetchVehicle: () => Promise<void>
+  fetchDisplacements: () => Promise<void>
   setShowFormState: (showFormState: ShowFormContextType) => void
 }
 
-export const FormVehicle: React.FC<FormVehicleProps> = ({
-  vehicle,
+export const FormDisplacement: React.FC<FormDisplacementProps> = ({
+  displacement,
   titleButton,
-  fetchVehicle,
+  fetchDisplacements,
   setShowFormState,
 }) => {
   return (
@@ -36,8 +36,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'stretch',
-          gap: 4,
+          justifyContent: 'space-between',
           width: '100%',
         }}
       >

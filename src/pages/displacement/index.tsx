@@ -14,6 +14,7 @@ import { DISPLACEMENT_DELETE, DISPLACEMENT_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
+import { FormDisplacement } from './FormDisplacement'
 
 export type DataDisplacement = {
   id: number
@@ -50,16 +51,17 @@ export default function Displacement() {
   const [dataDisplacement, setDataDisplacement] = useState<
     DataDisplacement[] | null | undefined
   >(null)
+  const [displacement, setDisplacement] = useState<DataDisplacement>()
 
-  const fetchClients = useCallback(async () => {
+  const fetchDisplacements = useCallback(async () => {
     const { url, options } = DISPLACEMENT_GET()
     const data = await request(url, options)
     setDataDisplacement(data)
   }, [request])
 
   useEffect(() => {
-    fetchClients()
-  }, [fetchClients])
+    fetchDisplacements()
+  }, [fetchDisplacements])
 
   async function deleteDisplacement(id: number): Promise<void> {
     if (!confirm(`Deseja realmente excluir o registro?`)) {
@@ -67,11 +69,11 @@ export default function Displacement() {
     }
     const { url, options } = DISPLACEMENT_DELETE(id)
     await request(url, options)
-    fetchClients()
+    fetchDisplacements()
   }
 
   function getDisplacementForUpdate(displacement: DataDisplacement) {
-    console.log(displacement)
+    setDisplacement(displacement)
     setShowFormState({ showForm: true, titleButton: 'Atualizar' })
   }
 
@@ -79,7 +81,14 @@ export default function Displacement() {
     <section>
       <Header title="Deslocamentos" />
       {showFormState.showForm && (
-        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+        <Container>
+          <FormDisplacement
+            fetchDisplacements={fetchDisplacements}
+            setShowFormState={setShowFormState}
+            titleButton={showFormState.titleButton}
+            displacement={displacement}
+          />
+        </Container>
       )}
       <Container>
         {loading && <p>Carregando...</p>}

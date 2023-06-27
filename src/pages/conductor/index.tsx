@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { CONDUCTOR_DELETE, CONDUCTOR_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
+import { FormConductor } from './FormConductor'
 
 export type DataConductor = {
   id: number
@@ -31,6 +32,7 @@ export default function Conductor() {
   const [dataConductor, setDataConductor] = useState<
     DataConductor[] | null | undefined
   >(null)
+  const [conductor, setConductor] = useState<DataConductor>()
 
   const fetchClients = useCallback(async () => {
     const { url, options } = CONDUCTOR_GET()
@@ -52,7 +54,7 @@ export default function Conductor() {
   }
 
   function getConductorForUpdate(conductor: DataConductor) {
-    console.log(conductor)
+    setConductor(conductor)
     setShowFormState({ showForm: true, titleButton: 'Atualizar' })
   }
 
@@ -60,7 +62,14 @@ export default function Conductor() {
     <section>
       <Header title="Condutores" />
       {showFormState.showForm && (
-        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+        <Container>
+          <FormConductor
+            fetchConductors={fetchClients}
+            setShowFormState={setShowFormState}
+            titleButton={showFormState.titleButton}
+            conductor={conductor}
+          />
+        </Container>
       )}
       <Container>
         {loading && <p>Carregando...</p>}

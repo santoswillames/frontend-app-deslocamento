@@ -13,6 +13,7 @@ import { useEffect, useCallback, useState } from 'react'
 import { CLIENT_DELETE, CLIENT_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
+import { FormClient } from './FormClient'
 
 export type DataClients = {
   id: number
@@ -45,6 +46,7 @@ export default function Client() {
   const [dataClients, setDataClients] = useState<
     DataClients[] | null | undefined
   >(null)
+  const [client, setClient] = useState<DataClients>()
 
   const fetchClients = useCallback(async () => {
     const { url, options } = CLIENT_GET()
@@ -66,7 +68,7 @@ export default function Client() {
   }
 
   function getClientForUpdate(client: DataClients) {
-    console.log(client)
+    setClient(client)
     setShowFormState({ showForm: true, titleButton: 'Atualizar' })
   }
 
@@ -74,7 +76,14 @@ export default function Client() {
     <section>
       <Header title="Cliente" />
       {showFormState.showForm && (
-        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+        <Container>
+          <FormClient
+            fetchClients={fetchClients}
+            setShowFormState={setShowFormState}
+            titleButton={showFormState.titleButton}
+            client={client}
+          />
+        </Container>
       )}
       <Container>
         {loading && <p>Carregando...</p>}

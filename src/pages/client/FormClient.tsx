@@ -1,20 +1,20 @@
 import * as React from 'react'
-import { DataVehicle } from '.'
+import { DataClients } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
 import { ShowFormContextType } from '@/context/ShowForm'
 
-type FormVehicleProps = {
-  vehicle?: DataVehicle
+type FormClientProps = {
+  client?: DataClients
   titleButton: string
-  fetchVehicle: () => Promise<void>
+  fetchClients: () => Promise<void>
   setShowFormState: (showFormState: ShowFormContextType) => void
 }
 
-export const FormVehicle: React.FC<FormVehicleProps> = ({
-  vehicle,
+export const FormClient: React.FC<FormClientProps> = ({
+  client,
   titleButton,
-  fetchVehicle,
+  fetchClients,
   setShowFormState,
 }) => {
   return (
@@ -35,33 +35,54 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
-          justifyContent: 'stretch',
+          justifyContent: 'start',
           gap: 4,
           width: '100%',
         }}
       >
         <TextField id="placa" label="Placa" variant="outlined" name="placa" />
         <TextField
-          id="marcaModelo"
-          label="Marca ou Modelo"
+          id="numeroDocumento"
+          label="Número do documento"
           variant="outlined"
-          name="marcaModelo"
-        />
-        <TextField
-          id="anoFabricacao"
-          label="Ano de Fabricação"
-          variant="outlined"
-          name="anoFabricacao"
+          name="numeroDocumento"
           type="number"
         />
         <TextField
-          id="kmAtual"
-          label="Km Atual"
+          id="tipoDocumento"
+          label="Tipo do Documento"
           variant="outlined"
-          name="kmAtual"
+          name="tipoDocumento"
+        />
+        <TextField id="nome" label="Nome" variant="outlined" name="nome" />
+        <TextField
+          id="logradouro"
+          label="Logradouro"
+          variant="outlined"
+          name="logradouro"
+        />
+        <TextField
+          id="numero"
+          label="Número"
+          variant="outlined"
+          name="numero"
           type="number"
         />
+        <TextField
+          id="bairro"
+          label="Bairro"
+          variant="outlined"
+          name="bairro"
+        />
+        <TextField
+          id="cidade"
+          label="Cidade"
+          variant="outlined"
+          name="cidade"
+        />
+        <TextField id="uf" label="UF" variant="outlined" name="uf" />
       </Box>
       <Box
         sx={{
@@ -90,7 +111,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
             type="submit"
             color="secondary"
           >
-            Atualizar
+            atualizar
           </Button>
         )}
         <Button
