@@ -1,3 +1,4 @@
+import useShowFormContext from '@/context/ShowForm'
 import AddButton from '../AddButton/AddButton'
 import { Box, Typography, Container } from '@mui/material'
 
@@ -6,6 +7,7 @@ type HeaderProps = {
 }
 
 export default function Header({ title }: HeaderProps) {
+  const { showFormState } = useShowFormContext()
   return (
     <Box component="header" sx={{ padding: '20px' }}>
       <Container
@@ -17,7 +19,7 @@ export default function Header({ title }: HeaderProps) {
         }}
       >
         <Typography variant="h3">{title}</Typography>
-        <AddButton />
+        {!showFormState.showForm && <AddButton />}
       </Container>
     </Box>
   )

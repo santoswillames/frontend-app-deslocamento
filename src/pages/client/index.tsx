@@ -14,7 +14,7 @@ import { CLIENT_DELETE, CLIENT_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
 
-type DataClients = {
+export type DataClients = {
   id: number
   numeroDocumento: string
   tipoDocumento: string

@@ -1,11 +1,11 @@
 import { PropsWithChildren, createContext, useContext, useState } from 'react'
 
-type ShowFormContextType = {
+export type ShowFormContextType = {
   showForm: boolean
   titleButton: string
 }
 
-type ShowFormState = {
+export type ShowFormState = {
   showFormState: ShowFormContextType
   setShowFormState(showFormState: ShowFormContextType): void
 }

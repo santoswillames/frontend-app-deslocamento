@@ -13,8 +13,9 @@ import { VEHICLE_DELETE, VEHICLE_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
 import { useCallback, useEffect, useState } from 'react'
 import useShowFormContext from '@/context/ShowForm'
+import { FormVehicle } from './FormVehicle'
 
-type DataVehicle = {
+export type DataVehicle = {
   id: number
   placa: string
   marcaModelo: string
@@ -31,11 +32,11 @@ export default function Vehicle() {
   const [dataVehicle, setDataVehicle] = useState<
     DataVehicle[] | null | undefined
   >(null)
+  const [vehicle, setVehicle] = useState<DataVehicle>()
 
   const fetchClients = useCallback(async () => {
     const { url, options } = VEHICLE_GET()
     const data = await request(url, options)
-    console.log(data)
     setDataVehicle(data)
   }, [request])
 
@@ -53,7 +54,7 @@ export default function Vehicle() {
   }
 
   function getVehicleForUpdate(vehicle: DataVehicle) {
-    console.log(vehicle)
+    setVehicle(vehicle)
     setShowFormState({ showForm: true, titleButton: 'Atualizar' })
   }
 
@@ -61,7 +62,14 @@ export default function Vehicle() {
     <section>
       <Header title="Veículos" />
       {showFormState.showForm && (
-        <Container>Aqui vai o formulário {showFormState.titleButton}</Container>
+        <Container>
+          <FormVehicle
+            fetchVehicle={fetchClients}
+            titleButton={showFormState.titleButton}
+            vehicle={vehicle}
+            setShowFormState={setShowFormState}
+          />
+        </Container>
       )}
       <Container></Container>
       <Container>

@@ -14,7 +14,7 @@ import { CONDUCTOR_DELETE, CONDUCTOR_GET } from '../api'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
 
-type DataConductor = {
+export type DataConductor = {
   id: number
   nome: string
   numeroHabilitacao: string

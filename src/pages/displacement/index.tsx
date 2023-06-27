@@ -15,7 +15,7 @@ import useFetch from '@/hooks/useFetch'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
 
-type DataDisplacement = {
+export type DataDisplacement = {
   id: number
   kmInicial: number
   kmFinal: number
