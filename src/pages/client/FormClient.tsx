@@ -2,32 +2,30 @@ import * as React from 'react'
 import { DataClients } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
-import { ShowFormContextType } from '@/context/ShowForm'
+import useShowFormContext, { ShowFormContextType } from '@/context/ShowForm'
+import { CLIENT_POST, CLIENT_PUT } from '../api'
+import useFetch from '@/hooks/useFetch'
 
 type FormClientProps = {
   client?: DataClients
-  titleButton: string
   fetchClients: () => Promise<void>
   setShowFormState: (showFormState: ShowFormContextType) => void
+  setClient: (client: DataClients | undefined) => void
 }
-
-type AddClient = Omit<DataClients, 'id'>
 
 export const FormClient: React.FC<FormClientProps> = ({
   client,
-  titleButton,
   fetchClients,
-  setShowFormState,
+  setClient,
 }) => {
-  const [dataClientUpdate, setDataClientUpdate] = React.useState<
-    DataClients | {}
-  >({})
-  const [formValue, setFormValue] = React.useState<
-    AddClient | DataClients | {}
-  >(dataClientUpdate)
+  const { setShowFormState, showFormState } = useShowFormContext()
+  const { request } = useFetch<DataClients[]>()
+
+  const [formValue, setFormValue] = React.useState<DataClients | {}>()
 
   React.useEffect(() => {
-    if (client) setDataClientUpdate(client)
+    if (client) setFormValue(client)
+    if (!client) setFormValue({})
   }, [client])
 
   function handleInputChange(event: React.FormEvent) {
@@ -37,19 +35,37 @@ export const FormClient: React.FC<FormClientProps> = ({
 
   async function addClient(event: React.FormEvent) {
     event.preventDefault()
-    console.log(new FormData(event.target as HTMLFormElement))
     const formData = new FormData(event.target as HTMLFormElement)
-    const dataClientAdd = Object.fromEntries(formData)
-    console.log(dataClientAdd)
+    const dataClientAdd: unknown = Object.fromEntries(formData)
+    const { url, options } = CLIENT_POST(dataClientAdd as DataClients)
+    const response = await request(url, options)
+
+    setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    fetchClients()
   }
 
   async function updateClient(event: React.FormEvent) {
     event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement)
+    const dataClient: unknown = Object.fromEntries(formData)
+    const dataClientAdd: DataClients = {
+      ...(dataClient as DataClients),
+      id: client?.id,
+    }
+
+    const { url, options } = CLIENT_PUT(client?.id, dataClientAdd)
+    const response = await request(url, options)
+
+    setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    fetchClients()
   }
 
   return (
     <Box
       component="form"
+      onSubmit={
+        showFormState.titleButton === 'Adicionar' ? addClient : updateClient
+      }
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -80,6 +96,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           type="number"
           onChange={handleInputChange}
           value={formValue?.numeroDocumento || ''}
+          disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
           id="tipoDocumento"
@@ -88,6 +105,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           name="tipoDocumento"
           onChange={handleInputChange}
           value={formValue?.tipoDocumento || ''}
+          disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
           id="nome"
@@ -148,14 +166,13 @@ export const FormClient: React.FC<FormClientProps> = ({
           width: '100%',
         }}
       >
-        {titleButton === 'Adicionar' ? (
+        {showFormState.titleButton === 'Adicionar' ? (
           <Button
             variant="contained"
             startIcon={<SaveRounded />}
             size="large"
             color="success"
             type="submit"
-            onClick={(event) => addClient(event)}
           >
             Salvar
           </Button>
@@ -166,7 +183,6 @@ export const FormClient: React.FC<FormClientProps> = ({
             size="large"
             type="submit"
             color="secondary"
-            onClick={(event) => updateClient(event)}
           >
             atualizar
           </Button>
@@ -176,9 +192,10 @@ export const FormClient: React.FC<FormClientProps> = ({
           startIcon={<ClearRounded />}
           size="large"
           color="error"
-          onClick={() =>
+          onClick={() => {
+            setClient(undefined)
             setShowFormState({ showForm: false, titleButton: 'Adicionar' })
-          }
+          }}
         >
           Cancelar
         </Button>

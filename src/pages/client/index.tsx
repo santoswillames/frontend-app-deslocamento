@@ -16,7 +16,7 @@ import useShowFormContext from '@/context/ShowForm'
 import { FormClient } from './FormClient'
 
 export type DataClients = {
-  id: number
+  id?: number
   numeroDocumento: string
   tipoDocumento: string
   nome: string
@@ -58,7 +58,10 @@ export default function Client() {
     fetchClients()
   }, [fetchClients])
 
-  async function deleteClient(id: number, name: string): Promise<void> {
+  async function deleteClient(
+    id: number | undefined,
+    name: string,
+  ): Promise<void> {
     if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
       return
     }
@@ -80,8 +83,8 @@ export default function Client() {
           <FormClient
             fetchClients={fetchClients}
             setShowFormState={setShowFormState}
-            titleButton={showFormState.titleButton}
             client={client}
+            setClient={setClient}
           />
         </Container>
       )}

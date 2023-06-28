@@ -1,13 +1,13 @@
 type CreateClient = {
   id?: number
-  numeroDocumento: 'string'
-  tipoDocumento: 'string'
-  nome: 'string'
-  logradouro: 'string'
-  numero: 'string'
-  bairro: 'string'
-  cidade: 'string'
-  uf: 'string'
+  numeroDocumento: string
+  tipoDocumento: string
+  nome: string
+  logradouro: string
+  numero: string
+  bairro: string
+  cidade: string
+  uf: string
 }
 
 type CreateConductor = {
@@ -66,7 +66,7 @@ export function CLIENT_POST(body: CreateClient) {
   }
 }
 
-export function CLIENT_PUT(id: number, body: CreateClient) {
+export function CLIENT_PUT(id: number | undefined, body: CreateClient) {
   return {
     url: `Cliente/${id}`,
     options: {
@@ -79,7 +79,7 @@ export function CLIENT_PUT(id: number, body: CreateClient) {
   }
 }
 
-export function CLIENT_DELETE(id: number) {
+export function CLIENT_DELETE(id: number | undefined) {
   return {
     url: `Cliente/${id}`,
     options: {
@@ -114,7 +114,7 @@ export function CONDUCTOR_POST(body: CreateConductor) {
   }
 }
 
-export function CONDUCTOR_PUT(id: number, body: CreateConductor) {
+export function CONDUCTOR_PUT(id: number | undefined, body: CreateConductor) {
   return {
     url: `Condutor/${id}`,
     options: {
@@ -127,7 +127,7 @@ export function CONDUCTOR_PUT(id: number, body: CreateConductor) {
   }
 }
 
-export function CONDUCTOR_DELETE(id: number) {
+export function CONDUCTOR_DELETE(id: number | undefined) {
   return {
     url: `Condutor/${id}`,
     options: {
@@ -162,7 +162,10 @@ export function DISPLACEMENT_POST(body: CreateDisplacement) {
   }
 }
 
-export function DISPLACEMENT_PUT(id: number, body: UpdateDisplacement) {
+export function DISPLACEMENT_PUT(
+  id: number | undefined,
+  body: UpdateDisplacement,
+) {
   return {
     url: `Deslocamento/${id}`,
     options: {
@@ -175,7 +178,7 @@ export function DISPLACEMENT_PUT(id: number, body: UpdateDisplacement) {
   }
 }
 
-export function DISPLACEMENT_DELETE(id: number) {
+export function DISPLACEMENT_DELETE(id: number | undefined) {
   return {
     url: `Deslocamento/${id}`,
     options: {
@@ -210,7 +213,7 @@ export function VEHICLE_POST(body: CreateVehicle) {
   }
 }
 
-export function VEHICLE_PUT(id: number, body: CreateVehicle) {
+export function VEHICLE_PUT(id: number | undefined, body: CreateVehicle) {
   return {
     url: `Veiculo/${id}`,
     options: {
@@ -223,7 +226,7 @@ export function VEHICLE_PUT(id: number, body: CreateVehicle) {
   }
 }
 
-export function VEHICLE_DELETE(id: number) {
+export function VEHICLE_DELETE(id: number | undefined) {
   return {
     url: `Veiculo/${id}`,
     options: {

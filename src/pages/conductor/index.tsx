@@ -16,7 +16,7 @@ import useShowFormContext from '@/context/ShowForm'
 import { FormConductor } from './FormConductor'
 
 export type DataConductor = {
-  id: number
+  id?: number
   nome: string
   numeroHabilitacao: string
   catergoriaHabilitacao: string
@@ -34,23 +34,26 @@ export default function Conductor() {
   >(null)
   const [conductor, setConductor] = useState<DataConductor>()
 
-  const fetchClients = useCallback(async () => {
+  const fetchConductors = useCallback(async () => {
     const { url, options } = CONDUCTOR_GET()
     const data = await request(url, options)
     setDataConductor(data)
   }, [request])
 
   useEffect(() => {
-    fetchClients()
-  }, [fetchClients])
+    fetchConductors()
+  }, [fetchConductors])
 
-  async function deleteConductor(id: number, name: string): Promise<void> {
+  async function deleteConductor(
+    id: number | undefined,
+    name: string,
+  ): Promise<void> {
     if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
       return
     }
     const { url, options } = CONDUCTOR_DELETE(id)
     await request(url, options)
-    fetchClients()
+    fetchConductors()
   }
 
   function getConductorForUpdate(conductor: DataConductor) {
@@ -64,9 +67,9 @@ export default function Conductor() {
       {showFormState.showForm && (
         <Container>
           <FormConductor
-            fetchConductors={fetchClients}
+            fetchConductors={fetchConductors}
             setShowFormState={setShowFormState}
-            titleButton={showFormState.titleButton}
+            setConductor={setConductor}
             conductor={conductor}
           />
         </Container>
