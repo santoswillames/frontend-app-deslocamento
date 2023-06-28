@@ -15,7 +15,11 @@ export default function Home() {
         App - Deslocamento
       </Typography>
       <Typography variant="h3">Escolha a categoria ao lado</Typography>
-      <ArrowBack />
+      <ArrowBack
+        fontSize="inherit"
+        color="success"
+        sx={{ width: '200px', height: '200px' }}
+      />
     </Container>
   )
 }
