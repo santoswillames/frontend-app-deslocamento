@@ -71,6 +71,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
       alert('Preencha os campos corretamente')
       return
     }
+
     const dataConductorAdd: DataConductor = {
       id: conductor?.id,
       vencimentoHabilitacao: new Date(
@@ -79,10 +80,12 @@ export const FormConductor: React.FC<FormConductorProps> = ({
       categoriaHabilitacao: dataConductor.catergoriaHabilitacao,
     }
 
+    console.log(dataConductorAdd)
+
     const { url, options } = CONDUCTOR_PUT(conductor?.id, dataConductorAdd)
     const response = await request(url, options)
 
-    if (response) {
+    if (response !== undefined) {
       alert('Registro ataulizado com sucesso!')
     } else {
       alert(`Falha ao atualizar o Registro! Verifique os dados digitados.`)
