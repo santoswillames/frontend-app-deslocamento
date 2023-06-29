@@ -154,6 +154,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           name="catergoriaHabilitacao"
           onChange={handleInputChange}
           value={formValue?.catergoriaHabilitacao || ''}
+          disabled={showFormState.titleButton === 'Atualizar'}
         />
 
         <TextField
