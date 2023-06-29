@@ -30,7 +30,7 @@ type CreateDisplacement = {
 }
 
 type UpdateDisplacement = {
-  id: number
+  id?: number
   kmFinal: number
   fimDeslocamento: string
   observacao: string
@@ -167,7 +167,7 @@ export function DISPLACEMENT_PUT(
   body: UpdateDisplacement,
 ) {
   return {
-    url: `Deslocamento/${id}`,
+    url: `Deslocamento/${id}/EncerrarDeslocamento`,
     options: {
       method: 'PUT',
       headers: {
