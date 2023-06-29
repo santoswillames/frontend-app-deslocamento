@@ -16,7 +16,7 @@ import useShowFormContext from '@/context/ShowForm'
 import { FormVehicle } from './FormVehicle'
 
 export type DataVehicle = {
-  id: number
+  id?: number
   placa: string
   marcaModelo: string
   anoFabricacao: number
@@ -34,23 +34,26 @@ export default function Vehicle() {
   >(null)
   const [vehicle, setVehicle] = useState<DataVehicle>()
 
-  const fetchClients = useCallback(async () => {
+  const fetchVehicle = useCallback(async () => {
     const { url, options } = VEHICLE_GET()
     const data = await request(url, options)
     setDataVehicle(data)
   }, [request])
 
   useEffect(() => {
-    fetchClients()
-  }, [fetchClients])
+    fetchVehicle()
+  }, [fetchVehicle])
 
-  async function deleteVehicle(id: number, name: string): Promise<void> {
+  async function deleteVehicle(
+    id: number | undefined,
+    name: string,
+  ): Promise<void> {
     if (!confirm(`Deseja realmente excluir o registro ${name}?`)) {
       return
     }
     const { url, options } = VEHICLE_DELETE(id)
     await request(url, options)
-    fetchClients()
+    fetchVehicle()
   }
 
   function getVehicleForUpdate(vehicle: DataVehicle) {
@@ -64,10 +67,9 @@ export default function Vehicle() {
       {showFormState.showForm && (
         <Container>
           <FormVehicle
-            fetchVehicle={fetchClients}
-            titleButton={showFormState.titleButton}
+            fetchVehicle={fetchVehicle}
             vehicle={vehicle}
-            setShowFormState={setShowFormState}
+            setVehicle={setVehicle}
           />
         </Container>
       )}

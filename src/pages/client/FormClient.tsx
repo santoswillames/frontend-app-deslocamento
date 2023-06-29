@@ -2,14 +2,13 @@ import * as React from 'react'
 import { DataClients } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
-import useShowFormContext, { ShowFormContextType } from '@/context/ShowForm'
+import useShowFormContext from '@/context/ShowForm'
 import { CLIENT_POST, CLIENT_PUT } from '../api'
 import useFetch from '@/hooks/useFetch'
 
 type FormClientProps = {
   client?: DataClients
   fetchClients: () => Promise<void>
-  setShowFormState: (showFormState: ShowFormContextType) => void
   setClient: (client: DataClients | undefined) => void
 }
 
@@ -40,6 +39,13 @@ export const FormClient: React.FC<FormClientProps> = ({
     const { url, options } = CLIENT_POST(dataClientAdd as DataClients)
     const response = await request(url, options)
 
+    if (response) {
+      alert('Registro realizado com sucesso!')
+    } else {
+      alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+      return
+    }
+
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
     fetchClients()
   }
@@ -55,6 +61,13 @@ export const FormClient: React.FC<FormClientProps> = ({
 
     const { url, options } = CLIENT_PUT(client?.id, dataClientAdd)
     const response = await request(url, options)
+
+    if (response) {
+      alert('Registro realizado com sucesso!')
+    } else {
+      alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+      return
+    }
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
     setClient(undefined)

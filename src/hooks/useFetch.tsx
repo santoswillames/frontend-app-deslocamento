@@ -21,7 +21,9 @@ function useFetch<T = unknown>() {
         .then((response) => {
           data = response.data
         })
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+          setError(err.message)
+        })
         .finally(() => setLoading(false))
 
       return data

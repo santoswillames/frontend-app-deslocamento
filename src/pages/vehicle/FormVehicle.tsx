@@ -2,24 +2,86 @@ import * as React from 'react'
 import { DataVehicle } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
-import { ShowFormContextType } from '@/context/ShowForm'
+import useShowFormContext from '@/context/ShowForm'
+import useFetch from '@/hooks/useFetch'
+import { VEHICLE_POST, VEHICLE_PUT } from '../api'
 
 type FormVehicleProps = {
   vehicle?: DataVehicle
-  titleButton: string
   fetchVehicle: () => Promise<void>
-  setShowFormState: (showFormState: ShowFormContextType) => void
+  setVehicle: (vehicle: DataVehicle | undefined) => void
 }
 
 export const FormVehicle: React.FC<FormVehicleProps> = ({
   vehicle,
-  titleButton,
   fetchVehicle,
-  setShowFormState,
+  setVehicle,
 }) => {
+  const { setShowFormState, showFormState } = useShowFormContext()
+  const { request } = useFetch<DataVehicle[]>()
+
+  const [formValue, setFormValue] = React.useState<DataVehicle | {}>()
+
+  React.useEffect(() => {
+    if (vehicle) setFormValue(vehicle)
+    if (!vehicle) setFormValue({})
+  }, [vehicle])
+
+  function handleInputChange(event: React.FormEvent) {
+    const { name, value } = event.target as HTMLInputElement
+    setFormValue({ ...formValue, [name]: value })
+  }
+
+  async function addVehicle(event: React.FormEvent) {
+    event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement)
+    const dataVehicle: unknown = Object.fromEntries(formData)
+
+    const { url, options } = VEHICLE_POST(dataVehicle as DataVehicle)
+    const response = await request(url, options)
+
+    if (response) {
+      alert('Registro realizado com sucesso!')
+    } else {
+      alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+      return
+    }
+
+    setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    fetchVehicle()
+  }
+
+  async function updateVehicle(event: React.FormEvent) {
+    event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement)
+    const dataVehicle: unknown = Object.fromEntries(formData)
+    const dataVehicleAdd: DataVehicle = {
+      id: vehicle?.id,
+      ...(dataVehicle as DataVehicle),
+    }
+
+    const { url, options } = VEHICLE_PUT(vehicle?.id, dataVehicleAdd)
+    const response = await request(url, options)
+
+    // Ajustar validação, o retorno da APi mesmo certo, está retornando vazio
+    // if (response) {
+    //   alert('Registro realizado com sucesso!')
+    // } else {
+    //   alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+    //   return
+    // }
+
+    setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    setVehicle(undefined)
+    fetchVehicle()
+  }
+
   return (
     <Box
       component="form"
+      onSubmit={
+        showFormState.titleButton === 'Adicionar' ? addVehicle : updateVehicle
+      }
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -42,12 +104,22 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           width: '100%',
         }}
       >
-        <TextField id="placa" label="Placa" variant="outlined" name="placa" />
+        <TextField
+          id="placa"
+          label="Placa"
+          variant="outlined"
+          name="placa"
+          onChange={handleInputChange}
+          value={formValue?.placa || ''}
+          disabled={showFormState.titleButton === 'Atualizar'}
+        />
         <TextField
           id="marcaModelo"
           label="Marca ou Modelo"
           variant="outlined"
           name="marcaModelo"
+          onChange={handleInputChange}
+          value={formValue?.marcaModelo || ''}
         />
         <TextField
           id="anoFabricacao"
@@ -55,6 +127,8 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           variant="outlined"
           name="anoFabricacao"
           type="number"
+          onChange={handleInputChange}
+          value={formValue?.anoFabricacao || ''}
         />
         <TextField
           id="kmAtual"
@@ -62,6 +136,8 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           variant="outlined"
           name="kmAtual"
           type="number"
+          onChange={handleInputChange}
+          value={formValue?.kmAtual || ''}
         />
       </Box>
       <Box
@@ -73,7 +149,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           width: '100%',
         }}
       >
-        {titleButton === 'Adicionar' ? (
+        {showFormState.titleButton === 'Adicionar' ? (
           <Button
             variant="contained"
             startIcon={<SaveRounded />}
@@ -99,9 +175,10 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           startIcon={<ClearRounded />}
           size="large"
           color="error"
-          onClick={() =>
+          onClick={() => {
+            setVehicle(undefined)
             setShowFormState({ showForm: false, titleButton: 'Adicionar' })
-          }
+          }}
         >
           Cancelar
         </Button>

@@ -2,14 +2,13 @@ import * as React from 'react'
 import { DataConductor } from '.'
 import { Box, TextField, Button } from '@mui/material'
 import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
-import useShowFormContext, { ShowFormContextType } from '@/context/ShowForm'
+import useShowFormContext from '@/context/ShowForm'
 import useFetch from '@/hooks/useFetch'
 import { CONDUCTOR_POST, CONDUCTOR_PUT } from '../api'
 
 type FormConductorProps = {
   conductor?: DataConductor
   fetchConductors: () => Promise<void>
-  setShowFormState: (showFormState: ShowFormContextType) => void
   setConductor: (conductor: DataConductor | undefined) => void
 }
 
@@ -51,8 +50,14 @@ export const FormConductor: React.FC<FormConductorProps> = ({
     }
 
     const { url, options } = CONDUCTOR_POST(dataConductor)
-    console.log(url, options)
     const response = await request(url, options)
+
+    if (response) {
+      alert('Registro realizado com sucesso!')
+    } else {
+      alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+      return
+    }
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
     fetchConductors()
@@ -76,6 +81,13 @@ export const FormConductor: React.FC<FormConductorProps> = ({
 
     const { url, options } = CONDUCTOR_PUT(conductor?.id, dataConductorAdd)
     const response = await request(url, options)
+
+    if (response) {
+      alert('Registro ataulizado com sucesso!')
+    } else {
+      alert(`Falha ao atualizar o Registro! Verifique os dados digitados.`)
+      return
+    }
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
     setConductor(undefined)
