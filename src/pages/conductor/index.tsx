@@ -100,7 +100,11 @@ export default function Conductor() {
                   <TableCell>{conductor.nome}</TableCell>
                   <TableCell>{conductor.numeroHabilitacao}</TableCell>
                   <TableCell>{conductor.catergoriaHabilitacao}</TableCell>
-                  <TableCell>{conductor.vencimentoHabilitacao}</TableCell>
+                  <TableCell>
+                    {new Date(
+                      conductor.vencimentoHabilitacao,
+                    ).toLocaleDateString()}
+                  </TableCell>
                   <TableCell align="center">
                     <Button
                       sx={{ cursor: 'pointer' }}

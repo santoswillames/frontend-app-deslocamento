@@ -115,6 +115,7 @@ export function CONDUCTOR_POST(body: CreateConductor) {
 }
 
 export function CONDUCTOR_PUT(id: number | undefined, body: CreateConductor) {
+  console.log('PUT', body)
   return {
     url: `Condutor/${id}`,
     options: {

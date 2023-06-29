@@ -37,11 +37,21 @@ export const FormConductor: React.FC<FormConductorProps> = ({
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
     const dataConductorAdd: unknown = Object.fromEntries(formData)
+    if (!dataConductorAdd.vencimentoHabilitacao) {
+      alert('Preencha os campos corretamente')
+      return
+    }
+    const dataConductor: DataConductor = {
+      nome: dataConductorAdd.nome,
+      numeroHabilitacao: dataConductorAdd.numeroHabilitacao,
+      vencimentoHabilitacao: new Date(
+        dataConductorAdd.vencimentoHabilitacao,
+      ).toISOString(),
+      categoriaHabilitacao: dataConductorAdd.catergoriaHabilitacao,
+    }
 
-    const test = date.toISOString()
-    console.log(date, test)
-
-    const { url, options } = CONDUCTOR_POST(dataConductorAdd as DataConductor)
+    const { url, options } = CONDUCTOR_POST(dataConductor)
+    console.log(url, options)
     const response = await request(url, options)
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
@@ -52,15 +62,23 @@ export const FormConductor: React.FC<FormConductorProps> = ({
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
     const dataConductor: unknown = Object.fromEntries(formData)
+    if (!dataConductor.vencimentoHabilitacao) {
+      alert('Preencha os campos corretamente')
+      return
+    }
     const dataConductorAdd: DataConductor = {
-      ...(dataConductor as DataConductor),
       id: conductor?.id,
+      vencimentoHabilitacao: new Date(
+        dataConductor.vencimentoHabilitacao,
+      ).toISOString(),
+      categoriaHabilitacao: dataConductor.catergoriaHabilitacao,
     }
 
     const { url, options } = CONDUCTOR_PUT(conductor?.id, dataConductorAdd)
     const response = await request(url, options)
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    setConductor(undefined)
     fetchConductors()
   }
 
@@ -128,6 +146,8 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           label="Vencimento da CNH"
           variant="outlined"
           name="vencimentoHabilitacao"
+          required
+          type="date"
           onChange={handleInputChange}
           value={formValue?.vencimentoHabilitacao || ''}
         />

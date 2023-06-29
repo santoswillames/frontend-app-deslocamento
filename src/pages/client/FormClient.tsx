@@ -57,6 +57,7 @@ export const FormClient: React.FC<FormClientProps> = ({
     const response = await request(url, options)
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+    setClient(undefined)
     fetchClients()
   }
 
