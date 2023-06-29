@@ -1,15 +1,12 @@
 import useShowFormContext from '@/context/ShowForm'
 import AddButton from '../AddButton/AddButton'
 import { Box, Typography, Container } from '@mui/material'
-import CloseButton from '../CloseButton/CloseButton'
-import { useRouter } from 'next/router'
 
 type HeaderProps = {
   title: string
 }
 
 export default function Header({ title }: HeaderProps) {
-  const router = useRouter()
   const { showFormState } = useShowFormContext()
   return (
     <Box component="header" sx={{ padding: '20px' }}>
@@ -31,12 +28,7 @@ export default function Header({ title }: HeaderProps) {
             gap: 2,
           }}
         >
-          {!showFormState.showForm && (
-            <>
-              <AddButton />
-              {router.pathname === '/displacement' && <CloseButton />}
-            </>
-          )}
+          {!showFormState.showForm && <AddButton />}
         </Box>
       </Container>
     </Box>

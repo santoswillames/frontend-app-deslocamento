@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { DataDisplacement } from '.'
 import { Box, TextField, Button } from '@mui/material'
-import { SaveRounded, ClearRounded, EditRounded } from '@mui/icons-material'
+import { SaveRounded, ClearRounded, Check } from '@mui/icons-material'
 import { ShowFormContextType } from '@/context/ShowForm'
 
 type FormDisplacementProps = {
@@ -17,7 +17,7 @@ export const FormDisplacement: React.FC<FormDisplacementProps> = ({
   fetchDisplacements,
   setShowFormState,
 }) => {
-  return (
+  return titleButton === 'Adicionar' ? (
     <Box
       component="form"
       sx={{
@@ -50,23 +50,11 @@ export const FormDisplacement: React.FC<FormDisplacementProps> = ({
           type="number"
         />
         <TextField
-          id="kmFinal"
-          label="Km Final"
-          variant="outlined"
-          name="kmFinal"
-          type="number"
-        />
-        <TextField
           id="inicioDeslocamento"
           label="Inicio do deslocamento"
           variant="outlined"
           name="inicioDeslocamento"
-        />
-        <TextField
-          id="fimDeslocamento"
-          label="Fim do deslocamento"
-          variant="outlined"
-          name="fimDeslocamento"
+          type="date"
         />
         <TextField
           id="checkList"
@@ -114,27 +102,95 @@ export const FormDisplacement: React.FC<FormDisplacementProps> = ({
           width: '100%',
         }}
       >
-        {titleButton === 'Adicionar' ? (
-          <Button
-            variant="contained"
-            startIcon={<SaveRounded />}
-            size="large"
-            color="success"
-            type="submit"
-          >
-            Salvar
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            startIcon={<EditRounded />}
-            size="large"
-            type="submit"
-            color="secondary"
-          >
-            Atualizar
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          startIcon={<SaveRounded />}
+          size="large"
+          color="success"
+          type="submit"
+        >
+          Salvar
+        </Button>
+
+        <Button
+          variant="contained"
+          startIcon={<ClearRounded />}
+          size="large"
+          color="error"
+          onClick={() =>
+            setShowFormState({ showForm: false, titleButton: 'Adicionar' })
+          }
+        >
+          Cancelar
+        </Button>
+      </Box>
+    </Box>
+  ) : (
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        flexDirection: 'column',
+        marginBottom: '12px',
+        padding: '0 0 8px 0',
+        borderBottom: '1px solid rgb(182, 182, 182)',
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'start',
+          gap: 4,
+          width: '100%',
+        }}
+      >
+        <TextField
+          id="kmFinal"
+          label="KM Final"
+          variant="outlined"
+          name="kmFinal"
+          type="number"
+        />
+        <TextField
+          id="observacao"
+          label="Observação"
+          variant="outlined"
+          name="observacao"
+        />
+        <TextField
+          id="fimDeslocamento"
+          label="Fim do Deslocamento"
+          variant="outlined"
+          name="fimDeslocamento"
+          type="date"
+        />
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'start',
+          gap: 4,
+          width: '100%',
+        }}
+      >
+        <Button
+          variant="contained"
+          startIcon={<Check />}
+          size="large"
+          color="warning"
+          type="submit"
+        >
+          Encerrar
+        </Button>
+
         <Button
           variant="contained"
           startIcon={<ClearRounded />}

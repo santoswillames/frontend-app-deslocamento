@@ -8,11 +8,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Box,
 } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 import { DISPLACEMENT_DELETE, DISPLACEMENT_GET } from '../api'
 import useFetch from '@/hooks/useFetch'
-import { DeleteRounded, EditRounded } from '@mui/icons-material'
+import { DeleteRounded, Check } from '@mui/icons-material'
 import useShowFormContext from '@/context/ShowForm'
 import { FormDisplacement } from './FormDisplacement'
 
@@ -31,6 +32,7 @@ export type DataDisplacement = {
 }
 
 const cells = [
+  'Ações',
   'KM Inicial',
   'KM Final',
   'Inicio Deslocamento',
@@ -41,7 +43,6 @@ const cells = [
   'Condutor',
   'Veículo',
   'Cliente',
-  'Ações',
 ]
 
 export default function Displacement() {
@@ -113,6 +114,39 @@ export default function Displacement() {
                   key={displacement?.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
+                  <TableCell align="center">
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        startIcon={<Check />}
+                        size="small"
+                        color="warning"
+                        sx={{ cursor: 'pointer' }}
+                        title="Encerrar Deslocamento"
+                        onClick={() => getDisplacementForUpdate(displacement)}
+                      >
+                        Encerrar
+                      </Button>
+
+                      <Button
+                        variant="contained"
+                        startIcon={<DeleteRounded />}
+                        size="small"
+                        color="error"
+                        sx={{ cursor: 'pointer' }}
+                        title="Excluir"
+                        onClick={() => deleteDisplacement(displacement.id)}
+                      >
+                        Deletar
+                      </Button>
+                    </Box>
+                  </TableCell>
                   <TableCell>{displacement.kmInicial}</TableCell>
                   <TableCell>{displacement.kmFinal}</TableCell>
                   <TableCell>
@@ -127,22 +161,6 @@ export default function Displacement() {
                   <TableCell>{displacement.idCondutor}</TableCell>
                   <TableCell>{displacement.idVeiculo}</TableCell>
                   <TableCell>{displacement.idCliente}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      sx={{ cursor: 'pointer' }}
-                      title="Editar"
-                      onClick={() => getDisplacementForUpdate(displacement)}
-                    >
-                      <EditRounded sx={{ color: 'yellow' }} />
-                    </Button>
-                    <Button
-                      sx={{ cursor: 'pointer' }}
-                      title="Excluir"
-                      onClick={() => deleteDisplacement(displacement.id)}
-                    >
-                      <DeleteRounded sx={{ color: 'red' }} />
-                    </Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
