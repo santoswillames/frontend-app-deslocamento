@@ -52,7 +52,14 @@ export default function Vehicle() {
       return
     }
     const { url, options } = VEHICLE_DELETE(id)
-    await request(url, options)
+    const res = await request(url, options)
+    if (res !== undefined) {
+      alert('registro excluido com SUCESSO!')
+    } else {
+      alert(
+        'Falha ao tentar excluir registo! Verifique se o resgistro está vinculado em um deslocamento.',
+      )
+    }
     fetchVehicle()
   }
 

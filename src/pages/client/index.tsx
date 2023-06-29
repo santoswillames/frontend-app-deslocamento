@@ -66,7 +66,15 @@ export default function Client() {
       return
     }
     const { url, options } = CLIENT_DELETE(id)
-    await request(url, options)
+    const res = await request(url, options)
+    console.log(res)
+    if (res !== undefined) {
+      alert('registro excluido com SUCESSO!')
+    } else {
+      alert(
+        'Falha ao tentar excluir registo! Verifique se o resgistro está vinculado em um deslocamento.',
+      )
+    }
     fetchClients()
   }
 
@@ -82,7 +90,6 @@ export default function Client() {
         <Container>
           <FormClient
             fetchClients={fetchClients}
-            setShowFormState={setShowFormState}
             client={client}
             setClient={setClient}
           />

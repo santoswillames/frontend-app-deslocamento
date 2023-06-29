@@ -63,13 +63,12 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
     const { url, options } = VEHICLE_PUT(vehicle?.id, dataVehicleAdd)
     const response = await request(url, options)
 
-    // Ajustar validação, o retorno da APi mesmo certo, está retornando vazio
-    // if (response) {
-    //   alert('Registro realizado com sucesso!')
-    // } else {
-    //   alert('Falha ao realizar o Registro! Verifique os dados digitados.')
-    //   return
-    // }
+    if (response !== undefined) {
+      alert('Registro realizado com sucesso!')
+    } else {
+      alert('Falha ao realizar o Registro! Verifique os dados digitados.')
+      return
+    }
 
     setShowFormState({ showForm: false, titleButton: 'Adicionar' })
     setVehicle(undefined)

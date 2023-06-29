@@ -52,7 +52,14 @@ export default function Conductor() {
       return
     }
     const { url, options } = CONDUCTOR_DELETE(id)
-    await request(url, options)
+    const res = await request(url, options)
+    if (res !== undefined) {
+      alert('registro excluido com SUCESSO!')
+    } else {
+      alert(
+        'Falha ao tentar excluir registo! Verifique se o resgistro está vinculado em um deslocamento.',
+      )
+    }
     fetchConductors()
   }
 
@@ -68,7 +75,6 @@ export default function Conductor() {
         <Container>
           <FormConductor
             fetchConductors={fetchConductors}
-            setShowFormState={setShowFormState}
             setConductor={setConductor}
             conductor={conductor}
           />
