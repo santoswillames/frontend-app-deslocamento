@@ -12,6 +12,13 @@ type FormVehicleProps = {
   setVehicle: (vehicle: DataVehicle | undefined) => void
 }
 
+const initialState: DataVehicle = {
+  anoFabricacao: 0,
+  kmAtual: 0,
+  marcaModelo: '',
+  placa: '',
+}
+
 export const FormVehicle: React.FC<FormVehicleProps> = ({
   vehicle,
   fetchVehicle,
@@ -20,11 +27,13 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
   const { setShowFormState, showFormState } = useShowFormContext()
   const { request } = useFetch<DataVehicle[]>()
 
-  const [formValue, setFormValue] = React.useState<DataVehicle | {}>()
+  const [formValue, setFormValue] = React.useState<DataVehicle>(
+    () => initialState,
+  )
 
   React.useEffect(() => {
     if (vehicle) setFormValue(vehicle)
-    if (!vehicle) setFormValue({})
+    if (!vehicle) setFormValue(initialState)
   }, [vehicle])
 
   function handleInputChange(event: React.FormEvent) {
@@ -109,7 +118,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           variant="outlined"
           name="placa"
           onChange={handleInputChange}
-          value={formValue?.placa || ''}
+          value={formValue.placa}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
@@ -118,7 +127,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           variant="outlined"
           name="marcaModelo"
           onChange={handleInputChange}
-          value={formValue?.marcaModelo || ''}
+          value={formValue.marcaModelo}
         />
         <TextField
           id="anoFabricacao"
@@ -127,7 +136,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           name="anoFabricacao"
           type="number"
           onChange={handleInputChange}
-          value={formValue?.anoFabricacao || ''}
+          value={formValue.anoFabricacao}
         />
         <TextField
           id="kmAtual"
@@ -136,7 +145,7 @@ export const FormVehicle: React.FC<FormVehicleProps> = ({
           name="kmAtual"
           type="number"
           onChange={handleInputChange}
-          value={formValue?.kmAtual || ''}
+          value={formValue.kmAtual}
         />
       </Box>
       <Box

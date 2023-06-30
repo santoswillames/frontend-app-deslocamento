@@ -3,6 +3,8 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import { Box } from '@mui/material'
 import theme from '@/pages/theme'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 type Props = {
   children: ReactNode
@@ -39,14 +41,16 @@ const styles = {
 
 export const Layout: FC<Props> = ({ children }) => {
   return (
-    <Box sx={styles.wrapper}>
-      <Navbar />
-      <Sidebar />
-      <Box sx={styles.container}>
-        <Box sx={styles.content}>
-          <Box sx={styles.childrenBox}>{children}</Box>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box sx={styles.wrapper}>
+        <Navbar />
+        <Sidebar />
+        <Box sx={styles.container}>
+          <Box sx={styles.content}>
+            <Box sx={styles.childrenBox}>{children}</Box>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </LocalizationProvider>
   )
 }

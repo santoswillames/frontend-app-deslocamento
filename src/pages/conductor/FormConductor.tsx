@@ -12,6 +12,13 @@ type FormConductorProps = {
   setConductor: (conductor: DataConductor | undefined) => void
 }
 
+const initialState: DataConductor = {
+  catergoriaHabilitacao: '',
+  nome: '',
+  numeroHabilitacao: '',
+  vencimentoHabilitacao: '',
+}
+
 export const FormConductor: React.FC<FormConductorProps> = ({
   conductor,
   fetchConductors,
@@ -20,11 +27,13 @@ export const FormConductor: React.FC<FormConductorProps> = ({
   const { setShowFormState, showFormState } = useShowFormContext()
   const { request } = useFetch<DataConductor[]>()
 
-  const [formValue, setFormValue] = React.useState<DataConductor | {}>()
+  const [formValue, setFormValue] = React.useState<DataConductor>(
+    () => initialState,
+  )
 
   React.useEffect(() => {
     if (conductor) setFormValue(conductor)
-    if (!conductor) setFormValue({})
+    if (!conductor) setFormValue(initialState)
   }, [conductor])
 
   function handleInputChange(event: React.FormEvent) {
@@ -35,7 +44,8 @@ export const FormConductor: React.FC<FormConductorProps> = ({
   async function addConductor(event: React.FormEvent) {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
-    const dataConductorAdd: unknown = Object.fromEntries(formData)
+    const dataConductorAdd: unknown | DataConductor =
+      Object.fromEntries(formData)
     if (!dataConductorAdd.vencimentoHabilitacao) {
       alert('Preencha os campos corretamente')
       return
@@ -79,8 +89,6 @@ export const FormConductor: React.FC<FormConductorProps> = ({
       ).toISOString(),
       categoriaHabilitacao: dataConductor.catergoriaHabilitacao,
     }
-
-    console.log(dataConductorAdd)
 
     const { url, options } = CONDUCTOR_PUT(conductor?.id, dataConductorAdd)
     const response = await request(url, options)
@@ -133,7 +141,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           variant="outlined"
           name="nome"
           onChange={handleInputChange}
-          value={formValue?.nome || ''}
+          value={formValue.nome}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
 
@@ -144,7 +152,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           name="numeroHabilitacao"
           type="number"
           onChange={handleInputChange}
-          value={formValue?.numeroHabilitacao || ''}
+          value={formValue.numeroHabilitacao}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
@@ -153,7 +161,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           variant="outlined"
           name="catergoriaHabilitacao"
           onChange={handleInputChange}
-          value={formValue?.catergoriaHabilitacao || ''}
+          value={formValue.catergoriaHabilitacao}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
 
@@ -165,7 +173,7 @@ export const FormConductor: React.FC<FormConductorProps> = ({
           required
           type="date"
           onChange={handleInputChange}
-          value={formValue?.vencimentoHabilitacao || ''}
+          value={formValue.vencimentoHabilitacao}
         />
       </Box>
       <Box

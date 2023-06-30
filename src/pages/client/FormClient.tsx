@@ -12,6 +12,17 @@ type FormClientProps = {
   setClient: (client: DataClients | undefined) => void
 }
 
+const initalState: DataClients = {
+  bairro: '',
+  cidade: '',
+  logradouro: '',
+  nome: '',
+  numero: '',
+  numeroDocumento: '',
+  tipoDocumento: '',
+  uf: '',
+}
+
 export const FormClient: React.FC<FormClientProps> = ({
   client,
   fetchClients,
@@ -20,16 +31,21 @@ export const FormClient: React.FC<FormClientProps> = ({
   const { setShowFormState, showFormState } = useShowFormContext()
   const { request } = useFetch<DataClients[]>()
 
-  const [formValue, setFormValue] = React.useState<DataClients | {}>()
+  const [formValue, setFormValue] = React.useState<DataClients>(
+    () => initalState,
+  )
 
   React.useEffect(() => {
     if (client) setFormValue(client)
-    if (!client) setFormValue({})
+    if (!client) setFormValue(initalState)
   }, [client])
 
   function handleInputChange(event: React.FormEvent) {
     const { name, value } = event.target as HTMLInputElement
-    setFormValue({ ...formValue, [name]: value })
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    })
   }
 
   async function addClient(event: React.FormEvent) {
@@ -109,7 +125,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           name="numeroDocumento"
           type="number"
           onChange={handleInputChange}
-          value={formValue?.numeroDocumento || ''}
+          value={formValue.numeroDocumento}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
@@ -118,7 +134,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="tipoDocumento"
           onChange={handleInputChange}
-          value={formValue?.tipoDocumento || ''}
+          value={formValue.tipoDocumento}
           disabled={showFormState.titleButton === 'Atualizar'}
         />
         <TextField
@@ -127,7 +143,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="nome"
           onChange={handleInputChange}
-          value={formValue?.nome || ''}
+          value={formValue.nome}
         />
         <TextField
           id="logradouro"
@@ -135,7 +151,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="logradouro"
           onChange={handleInputChange}
-          value={formValue?.logradouro || ''}
+          value={formValue.logradouro}
         />
         <TextField
           id="numero"
@@ -144,7 +160,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           name="numero"
           type="number"
           onChange={handleInputChange}
-          value={formValue?.numero || ''}
+          value={formValue.numero}
         />
         <TextField
           id="bairro"
@@ -152,7 +168,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="bairro"
           onChange={handleInputChange}
-          value={formValue?.bairro || ''}
+          value={formValue.bairro}
         />
         <TextField
           id="cidade"
@@ -160,7 +176,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="cidade"
           onChange={handleInputChange}
-          value={formValue?.cidade || ''}
+          value={formValue.cidade}
         />
         <TextField
           id="uf"
@@ -168,7 +184,7 @@ export const FormClient: React.FC<FormClientProps> = ({
           variant="outlined"
           name="uf"
           onChange={handleInputChange}
-          value={formValue?.uf || ''}
+          value={formValue.uf}
         />
       </Box>
       <Box
