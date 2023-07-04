@@ -12,9 +12,9 @@ type CreateClient = {
 
 type CreateConductor = {
   id?: number
-  nome: string
-  numeroHabilitacao: string
-  catergoriaHabilitacao: string
+  nome?: string
+  numeroHabilitacao?: string
+  categoriaHabilitacao: string
   vencimentoHabilitacao: string
 }
 

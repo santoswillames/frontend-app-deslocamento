@@ -12,6 +12,14 @@ type FormConductorProps = {
   setConductor: (conductor: DataConductor | undefined) => void
 }
 
+type DataConductorSend = {
+  id?: number
+  nome?: string
+  numeroHabilitacao?: string
+  categoriaHabilitacao: string
+  vencimentoHabilitacao: string
+}
+
 const initialState: DataConductor = {
   catergoriaHabilitacao: '',
   nome: '',
@@ -44,19 +52,18 @@ export const FormConductor: React.FC<FormConductorProps> = ({
   async function addConductor(event: React.FormEvent) {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
-    const dataConductorAdd: unknown | DataConductor =
-      Object.fromEntries(formData)
+    const dataConductorAdd = Object.fromEntries(formData)
     if (!dataConductorAdd.vencimentoHabilitacao) {
       alert('Preencha os campos corretamente')
       return
     }
-    const dataConductor: DataConductor = {
-      nome: dataConductorAdd.nome,
-      numeroHabilitacao: dataConductorAdd.numeroHabilitacao,
+    const dataConductor: DataConductorSend = {
+      nome: dataConductorAdd.nome as string,
+      numeroHabilitacao: dataConductorAdd.numeroHabilitacao as string,
       vencimentoHabilitacao: new Date(
-        dataConductorAdd.vencimentoHabilitacao,
+        dataConductorAdd.vencimentoHabilitacao as string,
       ).toISOString(),
-      categoriaHabilitacao: dataConductorAdd.catergoriaHabilitacao,
+      categoriaHabilitacao: dataConductorAdd.catergoriaHabilitacao as string,
     }
 
     const { url, options } = CONDUCTOR_POST(dataConductor)
@@ -76,18 +83,18 @@ export const FormConductor: React.FC<FormConductorProps> = ({
   async function updateConductor(event: React.FormEvent) {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
-    const dataConductor: unknown = Object.fromEntries(formData)
+    const dataConductor = Object.fromEntries(formData)
     if (!dataConductor.vencimentoHabilitacao) {
       alert('Preencha os campos corretamente')
       return
     }
 
-    const dataConductorAdd: DataConductor = {
+    const dataConductorAdd: DataConductorSend = {
       id: conductor?.id,
       vencimentoHabilitacao: new Date(
-        dataConductor.vencimentoHabilitacao,
+        dataConductor.vencimentoHabilitacao as string,
       ).toISOString(),
-      categoriaHabilitacao: dataConductor.catergoriaHabilitacao,
+      categoriaHabilitacao: dataConductor.catergoriaHabilitacao as string,
     }
 
     const { url, options } = CONDUCTOR_PUT(conductor?.id, dataConductorAdd)
